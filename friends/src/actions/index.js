@@ -25,3 +25,22 @@ export const getFriends = () => dispatch => {
         dispatch({ type: DATA_FETCH_FAILURE, payload: err.response });
     });
 };
+export const BEGIN_ADD_FRIEND = "BEGIN_ADD_FRIEND";
+export const ADD_FRIEND_SUCCESS = "ADD_FRIEND_SUCCESS";
+export const ADD_FRIEND_FAILURE = "ADD_FRIEND_FAILURE";
+
+export const addFriend = friend => dispatch => {
+    dispatch({type: BEGIN_ADD_FRIEND});
+    axios.post('http://localhost:5000/api/friends', friend,
+    {
+        headers: { Authorization: localStorage.getItem("token") }
+    })
+    .then(res => {
+        console.log(res);
+        dispatch({type: ADD_FRIEND_SUCCESS, payload: res.data});
+    })
+    .catch(err => {
+        console.log(err.response);
+        dispatch({type: ADD_FRIEND_FAILURE, payload: err.response});
+    })
+} 
